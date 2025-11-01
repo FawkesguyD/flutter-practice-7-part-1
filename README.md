@@ -9,13 +9,13 @@
 - Clone the repo
 
 ```bash
-git clone https://github.com/FawkesguyD/flutter-practice-5.git
+git clone https://github.com/FawkesguyD/flutter-practice-7-part-1.git
 ```
 
 - Change workdir
 
 ```bash
-cd prac_6
+cd prac_7_1
 ```
 
 - Run the app (choose your platform defore)
