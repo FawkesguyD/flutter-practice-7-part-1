@@ -1,45 +1,43 @@
 ﻿import 'package:flutter/material.dart';
-import '../../data/repositories/recipe_repository.dart';
-import '../../data/models/recipe_model.dart';
-import '../widgets/recipe_card.dart';
+import '../../data/repositories/habit_repository.dart';
+import '../../data/models/habit_model.dart';
+import '../widgets/habit_card.dart';
 import 'categories_screen.dart';
 import 'favorites_screen.dart';
 import 'profile_screen.dart';
-import 'recipe_detail_screen.dart';
+import 'habit_detail_screen.dart';
 import 'shopping_list_screen.dart';
 
-class RecipesScreen extends StatelessWidget {
-  RecipesScreen({super.key});
+class HabitsScreen extends StatelessWidget {
+  HabitsScreen({super.key});
 
-  final RecipeRepository _repo = RecipeRepository();
+  final HabitRepository _repo = HabitRepository();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Каталог рецептов"),
-        backgroundColor: const Color(0xFF116A7B),
-        foregroundColor: Colors.white,
+        title: const Text("Habit Tracker"),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.category),
+            icon: const Icon(Icons.dashboard_customize_outlined),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CategoriesScreen())),
-            tooltip: "Категории",
+            tooltip: "Ритуалы",
           ),
           IconButton(
-            icon: const Icon(Icons.favorite),
+            icon: const Icon(Icons.favorite_border),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FavoritesScreen())),
             tooltip: "Избранное",
           ),
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.person_outline),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen())),
             tooltip: "Профиль",
           ),
         ],
       ),
-      body: FutureBuilder<List<Recipe>>(
+      body: FutureBuilder<List<Habit>>(
         future: _repo.getAll(),
         builder: (context, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
@@ -48,19 +46,20 @@ class RecipesScreen extends StatelessWidget {
           if (snap.hasError) {
             return Center(child: Text('Ошибка загрузки: ${snap.error}'));
           }
-          final recipes = snap.data ?? const <Recipe>[];
-          if (recipes.isEmpty) {
-            return const Center(child: Text('Рецептов нет'));
+          final habits = snap.data ?? const <Habit>[];
+          if (habits.isEmpty) {
+            return const Center(child: Text('Пока нет привычек для отображения'));
           }
           return ListView.builder(
-            itemCount: recipes.length,
+            itemCount: habits.length,
+            padding: const EdgeInsets.only(top: 8, bottom: 96),
             itemBuilder: (context, i) {
-              final r = recipes[i];
-              return RecipeCard(
-                recipe: r,
+              final habit = habits[i];
+              return HabitCard(
+                habit: habit,
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => RecipeDetailScreen(recipe: r)),
+                  MaterialPageRoute(builder: (_) => HabitDetailScreen(habit: habit)),
                 ),
               );
             },
@@ -69,8 +68,7 @@ class RecipesScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ShoppingListScreen())),
-        backgroundColor: const Color(0xFF116A7B),
-        child: const Icon(Icons.list, color: Colors.white),
+        child: const Icon(Icons.view_list_rounded),
       ),
     );
   }

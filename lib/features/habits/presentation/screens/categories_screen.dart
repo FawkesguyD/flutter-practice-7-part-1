@@ -1,8 +1,8 @@
 ﻿import 'package:flutter/material.dart';
-import '../../data/repositories/recipe_repository.dart';
-import '../../data/models/recipe_model.dart';
-import '../widgets/recipe_card.dart';
-import 'recipe_detail_screen.dart';
+import '../../data/repositories/habit_repository.dart';
+import '../../data/models/habit_model.dart';
+import '../widgets/habit_card.dart';
+import 'habit_detail_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -11,28 +11,39 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  final RecipeRepository _repo = RecipeRepository();
+  final HabitRepository _repo = HabitRepository();
   final PageController _controller = PageController();
   int _page = 0;
 
-  final List<String> categories = ["Все","Завтрак","Веган","Рыба","Азиатская","Десерт"];
+  final List<String> categories = ["Все", "Утро", "Энергия", "Внимательность", "Работа", "Вечер"];
 
-  List<Recipe> _filter(List<Recipe> all, String c) {
+  List<Habit> _filter(List<Habit> all, String c) {
     if (c == "Все") return all;
-    final q = c.toLowerCase();
-    return all.where((r) => r.title.toLowerCase().contains(q) || r.description.toLowerCase().contains(q)).toList();
+    final filters = {
+      "Утро": ["утро", "старт", "просып"],
+      "Энергия": ["энерг", "актив", "прогул"],
+      "Внимательность": ["дыхани", "фокус", "медитац", "благодар"],
+      "Работа": ["фокус", "работ", "спринт"],
+      "Вечер": ["вечер", "сон"],
+    };
+    final keywords = filters[c] ?? [c.toLowerCase()];
+    return all
+        .where(
+          (habit) => keywords.any(
+            (keyword) => habit.title.toLowerCase().contains(keyword) || habit.description.toLowerCase().contains(keyword),
+          ),
+        )
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Категории"),
-        backgroundColor: const Color(0xFF116A7B),
-        foregroundColor: Colors.white,
+        title: const Text("Категории ритуалов"),
         leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
       ),
-      body: FutureBuilder<List<Recipe>>(
+      body: FutureBuilder<List<Habit>>(
         future: _repo.getAll(),
         builder: (context, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
@@ -41,7 +52,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           if (snap.hasError) {
             return Center(child: Text('Ошибка загрузки: ${snap.error}'));
           }
-          final all = snap.data ?? const <Recipe>[];
+          final all = snap.data ?? const <Habit>[];
           return Column(
             children: [
               SizedBox(
@@ -54,6 +65,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     child: ChoiceChip(
                       label: Text(categories[i]),
                       selected: _page == i,
+                      labelStyle: TextStyle(
+                        color: _page == i ? Theme.of(context).colorScheme.onPrimary : null,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      selectedColor: Theme.of(context).colorScheme.primary,
                       onSelected: (_) {
                         setState(() {
                           _page = i;
@@ -75,13 +91,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     }
                     return ListView.builder(
                       itemCount: list.length,
+                      padding: const EdgeInsets.only(top: 8, bottom: 32),
                       itemBuilder: (context, i) {
-                        final r = list[i];
-                        return RecipeCard(
-                          recipe: r,
+                        final habit = list[i];
+                        return HabitCard(
+                          habit: habit,
                           onTap: () => Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => RecipeDetailScreen(recipe: r)),
+                            MaterialPageRoute(builder: (_) => HabitDetailScreen(habit: habit)),
                           ),
                         );
                       },
