@@ -23,3 +23,6 @@ cd prac_7_1
 ```bash
 flutter run -d <your_device>
 ```
+
+
+flutter окружение должно быть предварительно настроенно
