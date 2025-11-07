@@ -1,6 +1,5 @@
 ﻿import 'dart:async';
-
-import '../models/habit_model.dart';
+import 'package:prac7/features/habits/data/models/habit_model.dart';
 
 class HabitRepository {
   const HabitRepository();
@@ -19,7 +18,8 @@ class HabitRepository {
     Habit(
       id: '101',
       title: 'Утренняя настройка',
-      description: '5 минут на дыхание и фокус, чтобы задать спокойный ритм дню.',
+      description:
+          '5 минут на дыхание и фокус, чтобы задать спокойный ритм дню.',
       reminders: [
         'Налейте стакан воды перед началом',
         'Сядьте у окна или включите мягкий свет',
@@ -109,7 +109,8 @@ class HabitRepository {
     Habit(
       id: '106',
       title: 'Вечерняя благодарность',
-      description: 'Формирует устойчивость и завершает день на позитивной ноте.',
+      description:
+          'Формирует устойчивость и завершает день на позитивной ноте.',
       reminders: [
         'Создайте уютный уголок с пледом или свечой',
         'Храните дневник и ручку рядом с кроватью',

@@ -1,9 +1,9 @@
 ﻿import "package:flutter/material.dart";
-import "../../data/repositories/habit_repository.dart";
-import "../../data/repositories/favorites_repository.dart";
-import "../widgets/habit_card.dart";
-import "habit_detail_screen.dart";
-import "../../data/models/habit_model.dart";
+import "package:prac7/features/habits/data/repositories/habit_repository.dart";
+import "package:prac7/features/habits/data/repositories/favorites_repository.dart";
+import "package:prac7/features/habits/presentation/widgets/habit_card.dart";
+import "package:prac7/features/habits/presentation/screens/habit_detail_screen.dart";
+import "package:prac7/features/habits/data/models/habit_model.dart";
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -25,7 +25,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Избранное"),
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: FutureBuilder<List<Habit>>(
         future: _favRepo.getFavorites(),
@@ -47,7 +50,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               final habit = favs[i];
               return HabitCard(
                 habit: habit,
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => HabitDetailScreen(habit: habit))),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => HabitDetailScreen(habit: habit),
+                  ),
+                ),
               );
             },
           );

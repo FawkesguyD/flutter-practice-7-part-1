@@ -1,5 +1,5 @@
-﻿import "../models/habit_model.dart";
-import "habit_repository.dart";
+﻿import "package:prac7/features/habits/data/models/habit_model.dart";
+import "package:prac7/features/habits/data/repositories/habit_repository.dart";
 
 class ShoppingListRepository {
   final HabitRepository _repo;

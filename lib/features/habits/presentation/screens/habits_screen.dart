@@ -1,12 +1,12 @@
 ﻿import 'package:flutter/material.dart';
-import '../../data/repositories/habit_repository.dart';
-import '../../data/models/habit_model.dart';
-import '../widgets/habit_card.dart';
-import 'categories_screen.dart';
-import 'favorites_screen.dart';
-import 'profile_screen.dart';
-import 'habit_detail_screen.dart';
-import 'shopping_list_screen.dart';
+import 'package:prac7/features/habits/data/repositories/habit_repository.dart';
+import 'package:prac7/features/habits/data/models/habit_model.dart';
+import 'package:prac7/features/habits/presentation/widgets/habit_card.dart';
+import 'package:prac7/features/habits/presentation/screens/categories_screen.dart';
+import 'package:prac7/features/habits/presentation/screens/favorites_screen.dart';
+import 'package:prac7/features/habits/presentation/screens/profile_screen.dart';
+import 'package:prac7/features/habits/presentation/screens/habit_detail_screen.dart';
+import 'package:prac7/features/habits/presentation/screens/shopping_list_screen.dart';
 
 class HabitsScreen extends StatelessWidget {
   HabitsScreen({super.key});
@@ -22,17 +22,26 @@ class HabitsScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.dashboard_customize_outlined),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CategoriesScreen())),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const CategoriesScreen()),
+            ),
             tooltip: "Ритуалы",
           ),
           IconButton(
             icon: const Icon(Icons.favorite_border),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FavoritesScreen())),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const FavoritesScreen()),
+            ),
             tooltip: "Избранное",
           ),
           IconButton(
             icon: const Icon(Icons.person_outline),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen())),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ProfileScreen()),
+            ),
             tooltip: "Профиль",
           ),
         ],
@@ -48,7 +57,9 @@ class HabitsScreen extends StatelessWidget {
           }
           final habits = snap.data ?? const <Habit>[];
           if (habits.isEmpty) {
-            return const Center(child: Text('Пока нет привычек для отображения'));
+            return const Center(
+              child: Text('Пока нет привычек для отображения'),
+            );
           }
           return ListView.builder(
             itemCount: habits.length,
@@ -59,7 +70,9 @@ class HabitsScreen extends StatelessWidget {
                 habit: habit,
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => HabitDetailScreen(habit: habit)),
+                  MaterialPageRoute(
+                    builder: (_) => HabitDetailScreen(habit: habit),
+                  ),
                 ),
               );
             },
@@ -67,7 +80,10 @@ class HabitsScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ShoppingListScreen())),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const ShoppingListScreen()),
+        ),
         child: const Icon(Icons.view_list_rounded),
       ),
     );
